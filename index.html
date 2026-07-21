@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Planejamento · Sem Férias em 2026</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * { transition: background-color 0.2s, color 0.15s; }
+        body { background: #f0f4fa; font-family: 'Segoe UI', Roboto, system-ui, sans-serif; padding-bottom: 3rem; }
+        .dashboard-card { background: white; border-radius: 20px; padding: 1.5rem 1.2rem; box-shadow: 0 8px 24px rgba(0,20,40,0.06); border: 1px solid rgba(0,0,0,0.03); height: 100%; transition: transform 0.15s; }
+        .dashboard-card:hover { transform: translateY(-2px); }
+        .stat-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
+        .bg-soft-success { background: #e1f7e8; color: #0e7b3a; }
+        .bg-soft-primary { background: #e6edfb; color: #1a4cba; }
+        .bg-soft-warning { background: #fff2da; color: #b45a1c; }
+        .bg-soft-danger { background: #fde8e8; color: #b33636; }
+        .bg-soft-purple { background: #ede4ff; color: #5e3a9e; }
+        .bg-soft-info { background: #e3f0ff; color: #0a6b9e; }
+        .text-muted-light { color: #6b7a8f; }
+        .chart-container { position: relative; height: 200px; max-height: 200px; margin-top: 0.3rem; }
+        .timeline-item { border-left: 3px solid #1a4cba; padding-left: 1.2rem; margin-bottom: 0.8rem; }
+        .timeline-item small { color: #6b7a8f; }
+        .badge-soft { background: #eef2f7; color: #2c3e5a; font-weight: 500; padding: 0.3rem 0.7rem; border-radius: 40px; font-size: 0.8rem; }
+        .badge-pill-custom { background: #eef2f7; color: #1a2a4a; border-radius: 40px; padding: 0.3rem 1rem; font-size: 0.85rem; }
+        .table-sm-custom td, .table-sm-custom th { padding: 0.3rem 0.2rem; font-size: 0.8rem; }
+        .border-radius-16 { border-radius: 16px; }
+        .bg-light-blue { background: #f8faff; }
+        .text-negative { color: #dc3545; }
+        .text-positive { color: #0e7b3a; }
+        .progress-custom { height: 8px; border-radius: 40px; background: #eef2f7; }
+        .progress-custom .progress-bar { border-radius: 40px; }
+        .dia-item { display: flex; justify-content: space-between; padding: 0.15rem 0; border-bottom: 1px dashed #eef2f7; font-size: 0.85rem; }
+        .dia-item:last-child { border-bottom: none; }
+        .card-estrategia { border-top: 4px solid #2ecc71; }
+        .fase-badge { font-size: 0.65rem; padding: 0.15rem 0.6rem; border-radius: 40px; }
+        .fase-1 { background: #ffe0b2; color: #b45a1c; }
+        .fase-2 { background: #c8e6c9; color: #0e7b3a; }
+        .card-resumo-final { background: linear-gradient(135deg, #1a4cba 0%, #0f3d96 100%); color: white; border-radius: 20px; padding: 1.5rem; }
+        .card-resumo-final .text-muted-light { color: rgba(255,255,255,0.7); }
+        .card-resumo-final .fw-bold { color: white; }
+        .decimo-60 { background: #d1fae5; border-radius: 4px; padding: 0 4px; }
+        .decimo-40 { background: #fce4ec; border-radius: 4px; padding: 0 4px; }
+        .moto-destaque { background: #fef3c7; border-radius: 4px; padding: 0 4px; }
+        .cartao-info { background: #fce4ec; border-radius: 4px; padding: 0 4px; }
+        .fora-cartao { background: #e3f0ff; border-radius: 4px; padding: 0 4px; }
+        .sobra-livre { background: #d1fae5; border-radius: 4px; padding: 0 4px; }
+        .receita-box { background: #f8faff; border-radius: 12px; padding: 0.8rem 1.2rem; }
+        .receita-box .row { margin: 0; }
+        .receita-box .col { padding: 0.2rem 0.5rem; }
+        .sem-ferias { background: #fef3c7; border-radius: 12px; padding: 0.5rem 1rem; border-left: 4px solid #f1c40f; }
+    </style>
+</head>
+<body>
+<div class="container py-4">
+
+    <!-- HEADER -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="display-6 fw-bold" style="color: #0b1e3c;"><i class="bi bi-graph-up-arrow me-2" style="color:#1a4cba;"></i>Planejamento Financeiro</h1>
+            <p class="text-muted-light">Cenário: Sem Férias em 2026 · Estável e Previsível</p>
+        </div>
+        <div>
+            <span class="badge-pill-custom me-2"><i class="bi bi-person me-1"></i>Pedro</span>
+            <span class="badge-pill-custom me-2"><i class="bi bi-calendar3 me-1"></i>Admissão: 12/09/2025</span>
+            <span class="badge-pill-custom"><i class="bi bi-bicycle me-1"></i>Fan 160 · 3.700 km</span>
+        </div>
+    </div>
+
+    <!-- AVISO SEM FÉRIAS -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-12">
+            <div class="sem-ferias">
+                <i class="bi bi-info-circle me-2" style="color:#f1c40f;"></i>
+                <span class="fw-bold">Cenário: Sem Férias em 2026</span>
+                <span class="text-muted-light ms-2">Salário recebido normalmente todos os meses · Fluxo de caixa estável e previsível</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESUMO RECEITAS -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-12">
+            <div class="receita-box">
+                <h6 class="fw-bold mb-2"><i class="bi bi-cash-stack me-2" style="color:#1a4cba;"></i>Receitas Mensais</h6>
+                <div class="row">
+                    <div class="col-md-3">
+                        <span class="text-muted-light">Salário CLT</span>
+                        <span class="fw-bold">R$ 1.617,44</span>
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-muted-light">Sistema</span>
+                        <span class="fw-bold">R$ 300,00</span>
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-muted-light">Extra</span>
+                        <span class="fw-bold">R$ 200,00</span>
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-muted-light">Total (out em diante)</span>
+                        <span class="fw-bold">R$ 2.117,44</span>
+                    </div>
+                </div>
+                <hr class="my-2">
+                <div class="row">
+                    <div class="col-md-4">
+                        <span class="text-muted-light">Agosto</span>
+                        <span class="fw-bold">R$ 2.917,44</span>
+                        <small class="text-muted-light d-block">(salário + R$ 1.300 do sistema)</small>
+                    </div>
+                    <div class="col-md-4">
+                        <span class="text-muted-light">Setembro</span>
+                        <span class="fw-bold">R$ 1.917,44</span>
+                    </div>
+                    <div class="col-md-4">
+                        <span class="text-muted-light">Outubro em diante</span>
+                        <span class="fw-bold">R$ 2.117,44</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESUMO ESTRUTURA -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-12">
+            <div class="dashboard-card card-estrategia">
+                <div class="d-flex flex-wrap justify-content-between align-items-center">
+                    <div>
+                        <h5 class="fw-bold mb-1"><i class="bi bi-credit-card me-2" style="color:#2ecc71;"></i>Estrutura de Pagamentos</h5>
+                        <p class="text-muted-light small mb-0">
+                            <span class="badge-soft me-1">💳 No Cartão</span> Capacete (R$70) + Academia (R$99,90 - dia 16, entra na fatura seguinte)
+                            <br>
+                            <span class="badge-soft me-1">💰 Fora do Cartão</span> Estacionamento R$100 · Combustível R$70 · VPS R$50 · C&A (Agosto R$11,90 | Set-Fev R$73,56)
+                            <br>
+                            <span class="badge-soft me-1">📅 13º</span> 60% em Novembro · 40% em Dezembro
+                        </p>
+                    </div>
+                    <div>
+                        <span class="fase-badge fase-1 me-2">Fase 1: Ago-Set</span>
+                        <span class="fase-badge fase-2">Fase 2: Out-Fev</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LEGENDA FATURAS -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-12">
+            <div class="bg-light-blue p-3 rounded">
+                <h6 class="fw-bold mb-2"><i class="bi bi-info-circle me-2" style="color:#1a4cba;"></i>Faturas do Cartão (já com Academia R$99,90)</h6>
+                <div class="row">
+                    <div class="col-md-3">
+                        <span class="badge-soft">19/08/2026</span>
+                        <span class="fw-bold">R$ 1.926,47</span>
+                        <small class="text-muted-light d-block">Sem academia</small>
+                    </div>
+                    <div class="col-md-3">
+                        <span class="badge-soft">19/09/2026</span>
+                        <span class="fw-bold">R$ 1.563,74</span>
+                        <small class="text-muted-light d-block">+ Academia R$99,90 (dia 16/08)</small>
+                    </div>
+                    <div class="col-md-3">
+                        <span class="badge-soft">19/10/2026</span>
+                        <span class="fw-bold">R$ 513,65</span>
+                        <small class="text-muted-light d-block">+ Academia R$99,90 (dia 16/09)</small>
+                    </div>
+                    <div class="col-md-3">
+                        <span class="badge-soft">19/11/2026</span>
+                        <span class="fw-bold">R$ 613,65</span>
+                        <small class="text-muted-light d-block">+ Academia R$99,90 (dia 16/10)</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CARDS RESUMO -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3 col-6">
+            <div class="dashboard-card d-flex align-items-center">
+                <div class="stat-icon bg-soft-success me-3"><i class="bi bi-wallet2"></i></div>
+                <div><span class="text-muted-light small">Saldo Atual</span><h4 class="mb-0 fw-bold" id="saldoAtual">R$ 0</h4></div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="dashboard-card d-flex align-items-center">
+                <div class="stat-icon bg-soft-warning me-3"><i class="bi bi-bicycle"></i></div>
+                <div><span class="text-muted-light small">Fundo Moto</span><h4 class="mb-0 fw-bold" id="fundoMotoAtual">R$ 0</h4></div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="dashboard-card d-flex align-items-center">
+                <div class="stat-icon bg-soft-primary me-3"><i class="bi bi-piggy-bank"></i></div>
+                <div><span class="text-muted-light small">Reserva</span><h4 class="mb-0 fw-bold" id="reservaAtual">R$ 0</h4></div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="dashboard-card d-flex align-items-center">
+                <div class="stat-icon bg-soft-danger me-3"><i class="bi bi-credit-card-2-front"></i></div>
+                <div><span class="text-muted-light small">Dívida Cartão</span><h4 class="mb-0 fw-bold" id="dividaCartao">R$ 0</h4></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESUMO FINAL -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-12">
+            <div class="card-resumo-final">
+                <h5 class="fw-bold mb-3"><i class="bi bi-trophy me-2"></i>Patrimônio Previsto · Fevereiro/2027</h5>
+                <div class="row">
+                    <div class="col-md-3">
+                        <span class="text-muted-light">Reserva de Emergência</span>
+                        <h3 class="fw-bold" id="reservaFinal">R$ 0</h3>
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-muted-light">Fundo da Moto</span>
+                        <h3 class="fw-bold" id="fundoMotoFinal">R$ 0</h3>
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-muted-light">Total em Dinheiro</span>
+                        <h3 class="fw-bold" id="totalDinheiroFinal">R$ 0</h3>
+                    </div>
+                    <div class="col-md-3">
+                        <span class="text-muted-light">+ Fan 160</span>
+                        <h3 class="fw-bold" id="totalCompraFinal">R$ 0</h3>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <span class="badge bg-warning text-dark">Diferença para R15: <strong id="diferencaFinal">R$ 0</strong></span>
+                    <span class="badge bg-info ms-2">💰 13º: 60% Nov / 40% Dez</span>
+                    <span class="badge bg-light text-dark ms-2">📊 Sem férias em 2026</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GRÁFICOS -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-8">
+            <div class="dashboard-card">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="fw-bold mb-0"><i class="bi bi-bar-chart-fill me-2" style="color:#1a4cba;"></i>Evolução do Saldo</h6>
+                    <span class="badge-soft small">Acumulado</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chartPatrimonio"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="dashboard-card">
+                <h6 class="fw-bold mb-2"><i class="bi bi-pie-chart-fill me-2" style="color:#1a4cba;"></i>Distribuição</h6>
+                <div class="chart-container" style="height:150px;">
+                    <canvas id="chartPizza"></canvas>
+                </div>
+                <div class="mt-2 small text-muted-light d-flex justify-content-between">
+                    <span><span class="badge bg-primary me-1">&nbsp;</span> Reserva</span>
+                    <span><span class="badge bg-warning me-1">&nbsp;</span> Moto</span>
+                    <span><span class="badge bg-secondary me-1">&nbsp;</span> Outros</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TABELA MENSAL -->
+    <div class="dashboard-card mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="fw-bold mb-0"><i class="bi bi-table me-2" style="color:#1a4cba;"></i>Fluxo de Caixa Mensal</h6>
+            <span class="badge-soft small">Agosto/2026 – Fevereiro/2027</span>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-sm table-borderless table-sm-custom">
+                <thead class="bg-light-blue border-radius-16">
+                    <tr>
+                        <th>Mês</th>
+                        <th>Entradas</th>
+                        <th>Saídas</th>
+                        <th>Saldo</th>
+                        <th>Acumulado</th>
+                        <th>Fundo Moto</th>
+                        <th>Reserva</th>
+                    </tr>
+                </thead>
+                <tbody id="corpoFluxo"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- DETALHAMENTO DIA A DIA -->
+    <div class="dashboard-card">
+        <h6 class="fw-bold mb-3"><i class="bi bi-clock me-2" style="color:#1a4cba;"></i>Detalhamento Dia a Dia</h6>
+        <div id="detalhamentoDiaContainer"></div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// ============================================================
+//  DADOS - CENÁRIO SEM FÉRIAS EM 2026
+//  Salário normal todos os meses
+//  Academia: R$99,90 (dia 16, entra na fatura seguinte)
+//  13º: 60% Nov / 40% Dez
+// ============================================================
+const dados = {
+    nome: 'Pedro',
+    salarioLiquido: 1617.44,
+    salarioBruto: 1750.68,
+    academia: 99.90,
+    
+    // 13º: 60% na primeira parcela, 40% na segunda
+    decimoParcela1: 0.60,
+    decimoParcela2: 0.40,
+    
+    // Receitas: Sistema + Extra
+    rendaExtra: {
+        '2026-08': { sistema: 1300, extra: 0 },
+        '2026-09': { sistema: 300, extra: 0 },
+        '2026-10': { sistema: 300, extra: 200 },
+        '2026-11': { sistema: 300, extra: 200 },
+        '2026-12': { sistema: 300, extra: 200 },
+        '2027-01': { sistema: 300, extra: 200 },
+        '2027-02': { sistema: 300, extra: 200 },
+    },
+    
+    // FATURAS COM ACADEMIA R$99,90
+    cartao: {
+        '2026-08': 1926.47,
+        '2026-09': 1563.74,  // 1463.84 + 99.90
+        '2026-10': 513.65,   // 413.75 + 99.90
+        '2026-11': 613.65,   // 513.75* + 99.90
+        '2026-12': 613.65,
+        '2027-01': 613.65,
+        '2027-02': 613.65,
+    },
+    
+    // Fora do cartão
+    foraCartao: {
+        estacionamento: 100,
+        combustivel: 70,
+        vps: 50,
+        ca: {
+            '2026-08': 11.90,
+            '2026-09': 73.56,
+            '2026-10': 73.56,
+            '2026-11': 73.56,
+            '2026-12': 73.56,
+            '2027-01': 73.56,
+            '2027-02': 73.56
+        }
+    },
+    
+    reservaMensal: 200,
+    motoMensal: 750,
+    
+    valorFan: 18500,
+    valorR15: 25220,
+};
+
+// ============================================================
+//  VARIÁVEIS GLOBAIS
+// ============================================================
+let acumulado = 0;
+let fundoMoto = 0;
+let reservaAcum = 0;
+let chartPatrimonio = null;
+let chartPizza = null;
+const meses = ['2026-08', '2026-09', '2026-10', '2026-11', '2026-12', '2027-01', '2027-02'];
+
+// ============================================================
+//  FUNÇÕES - SEM FÉRIAS
+// ============================================================
+function isFase2(mes) {
+    const ano = parseInt(mes.split('-')[0]);
+    const mesNum = parseInt(mes.split('-')[1]);
+    if (ano === 2026 && mesNum >= 10) return true;
+    if (ano === 2027 && mesNum <= 2) return true;
+    return false;
+}
+
+function getForaCartao(mes) {
+    const ca = dados.foraCartao.ca[mes] || 0;
+    return dados.foraCartao.estacionamento + dados.foraCartao.combustivel + dados.foraCartao.vps + ca;
+}
+
+function getRendaExtraTotal(mes) {
+    const extra = dados.rendaExtra[mes];
+    if (!extra) return 0;
+    return (extra.sistema || 0) + (extra.extra || 0);
+}
+
+function getSalario(mes) {
+    // Sem férias: recebe salário normalmente todos os meses
+    const mesNum = parseInt(mes.split('-')[1]);
+    if (mesNum >= 8 && mesNum <= 12) return dados.salarioLiquido;
+    if (mesNum >= 1 && mesNum <= 2) return dados.salarioLiquido;
+    return 0;
+}
+
+function getFerias(mes) {
+    // Sem férias em 2026
+    return 0;
+}
+
+function getDecimoTerceiro(mes) {
+    if (mes === '2026-11') {
+        return dados.salarioBruto * dados.decimoParcela1; // 60%
+    }
+    if (mes === '2026-12') {
+        return dados.salarioBruto * dados.decimoParcela2; // 40%
+    }
+    return 0;
+}
+
+function getCartao(mes) {
+    return dados.cartao[mes] || 0;
+}
+
+function calcularMes(mes) {
+    const entradas = getSalario(mes) + getRendaExtraTotal(mes) + getFerias(mes) + getDecimoTerceiro(mes);
+    const saidas = getCartao(mes) + getForaCartao(mes);
+    return { entradas, saidas };
+}
+
+// ============================================================
+//  GERAR DETALHAMENTO DIA A DIA
+// ============================================================
+function gerarDetalhamentoDia(mes) {
+    const mesNum = parseInt(mes.split('-')[1]);
+    const dias = [];
+    
+    const extra = dados.rendaExtra[mes];
+    const sistema = extra ? extra.sistema : 0;
+    const extraValor = extra ? extra.extra : 0;
+    
+    if (sistema > 0) {
+        dias.push({ dia: '01', desc: 'Sistema', valor: sistema, tipo: 'entrada', classe: '' });
+    }
+    if (extraValor > 0) {
+        dias.push({ dia: '01', desc: 'Extra', valor: extraValor, tipo: 'entrada', classe: '' });
+    }
+    
+    const salario = getSalario(mes);
+    if (salario > 0) {
+        dias.push({ dia: '03', desc: 'Salário', valor: salario, tipo: 'entrada', classe: '' });
+    }
+    
+    // Sem férias - não há entrada de férias
+    
+    if (mes === '2026-11') {
+        const valor60 = dados.salarioBruto * dados.decimoParcela1;
+        dias.push({ dia: '30', desc: '1ª Parcela 13º (60%)', valor: valor60, tipo: 'entrada', classe: 'decimo-60' });
+    }
+    
+    if (mes === '2026-12') {
+        const valor40 = dados.salarioBruto * dados.decimoParcela2;
+        dias.push({ dia: '15', desc: '2ª Parcela 13º (40%)', valor: valor40, tipo: 'entrada', classe: 'decimo-40' });
+    }
+    
+    // SAÍDAS - Cartão
+    const cartao = getCartao(mes);
+    if (cartao > 0) {
+        let desc = 'Cartão de Crédito';
+        if (mes === '2026-08') desc += ' (sem academia)';
+        else desc += ' (com academia R$99,90)';
+        dias.push({ dia: '19', desc: desc, valor: cartao, tipo: 'saida', classe: 'cartao-info' });
+    }
+    
+    // SAÍDAS - Fora do cartão
+    const ca = dados.foraCartao.ca[mes] || 0;
+    if (ca > 0) {
+        let desc = 'C&A';
+        if (mes === '2026-08') desc += ' (R$11,90)';
+        dias.push({ dia: '12', desc: desc, valor: ca, tipo: 'saida', classe: 'fora-cartao' });
+    }
+    
+    const fora = [
+        { dia: '05', desc: 'Estacionamento', valor: dados.foraCartao.estacionamento },
+        { dia: '10', desc: 'VPS', valor: dados.foraCartao.vps },
+        { dia: '20', desc: 'Combustível', valor: dados.foraCartao.combustivel },
+    ];
+    
+    fora.forEach(f => {
+        if (f.valor > 0) {
+            dias.push({ dia: f.dia, desc: f.desc, valor: f.valor, tipo: 'saida', classe: 'fora-cartao' });
+        }
+    });
+    
+    // Fase 2: Outubro em diante - Reserva + Moto
+    if (isFase2(mes)) {
+        dias.push({ dia: '28', desc: 'Reserva de Emergência', valor: dados.reservaMensal, tipo: 'saida', classe: '' });
+        dias.push({ dia: '28', desc: 'Fundo Moto', valor: dados.motoMensal, tipo: 'saida', classe: 'moto-destaque' });
+    }
+    
+    dias.sort((a, b) => parseInt(a.dia) - parseInt(b.dia));
+    return dias;
+}
+
+// ============================================================
+//  RENDER
+// ============================================================
+function renderizar() {
+    const tbody = document.getElementById('corpoFluxo');
+    tbody.innerHTML = '';
+    acumulado = 0;
+    fundoMoto = 0;
+    reservaAcum = 0;
+    
+    let detalhamentoHTML = '';
+
+    meses.forEach((mes) => {
+        const { entradas, saidas } = calcularMes(mes);
+        const saldo = entradas - saidas;
+        
+        const fase2 = isFase2(mes);
+        
+        let saldoAjustado = saldo;
+        let motoMes = 0;
+        let reservaMes = 0;
+        let sobraLivre = 0;
+        
+        if (fase2) {
+            motoMes = dados.motoMensal;
+            reservaMes = dados.reservaMensal;
+            saldoAjustado = saldo - motoMes - reservaMes;
+            sobraLivre = saldoAjustado;
+        }
+        
+        acumulado += saldoAjustado;
+        fundoMoto += motoMes;
+        reservaAcum += reservaMes;
+        
+        const hasCartao = dados.cartao[mes] !== undefined && dados.cartao[mes] > 0;
+        const fase = fase2 ? 'Fase 2' : 'Fase 1';
+        const decimoInfo = mes === '2026-11' ? ' 🟢 60%' : (mes === '2026-12' ? ' 🔵 40%' : '');
+        
+        let icones = '';
+        if (hasCartao) icones += ' 💳';
+        if (decimoInfo) icones += decimoInfo;
+        
+        const row = `<tr>
+            <td>
+                <span class="fw-semibold">${mes.replace('-','/')}</span>
+                ${icones}
+                <br><small class="text-muted-light">${fase}</small>
+                ${fase2 ? `<br><small class="sobra-livre">Sobra: R$ ${sobraLivre.toFixed(2)}</small>` : ''}
+            </td>
+            <td class="text-success fw-semibold">R$ ${entradas.toFixed(2)}</td>
+            <td class="text-danger">R$ ${saidas.toFixed(2)}</td>
+            <td class="${saldoAjustado >= 0 ? 'text-positive' : 'text-negative'} fw-semibold">
+                ${saldoAjustado >= 0 ? '+' : ''}R$ ${saldoAjustado.toFixed(2)}
+            </td>
+            <td class="fw-bold" style="color:#1a4cba;">R$ ${acumulado.toFixed(2)}</td>
+            <td class="fw-bold text-warning">R$ ${fundoMoto.toFixed(2)}</td>
+            <td class="fw-bold text-primary">R$ ${reservaAcum.toFixed(2)}</td>
+        </tr>`;
+        tbody.innerHTML += row;
+        
+        const dias = gerarDetalhamentoDia(mes);
+        
+        detalhamentoHTML += `
+            <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center bg-light-blue p-2 rounded">
+                    <span class="fw-bold">${mes.replace('-','/')} ${icones}</span>
+                    <span class="badge-soft">${fase}</span>
+                </div>
+                <div class="ps-3">
+                    ${dias.map(d => `
+                        <div class="dia-item">
+                            <span>
+                                <span class="badge-soft me-2">Dia ${d.dia}</span>
+                                <span class="${d.classe || ''}">${d.desc}</span>
+                            </span>
+                            <span class="${d.tipo === 'entrada' ? 'text-success' : 'text-danger'} fw-semibold">
+                                ${d.tipo === 'entrada' ? '+' : '-'} R$ ${d.valor.toFixed(2)}
+                            </span>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    });
+
+    document.getElementById('saldoAtual').innerHTML = `R$ ${acumulado.toFixed(2)}`;
+    document.getElementById('fundoMotoAtual').innerHTML = `R$ ${fundoMoto.toFixed(2)}`;
+    document.getElementById('reservaAtual').innerHTML = `R$ ${reservaAcum.toFixed(2)}`;
+    
+    let dividaTotal = 0;
+    Object.values(dados.cartao).forEach(v => dividaTotal += v);
+    document.getElementById('dividaCartao').innerHTML = `R$ ${dividaTotal.toFixed(2)}`;
+
+    document.getElementById('reservaFinal').innerHTML = `R$ ${reservaAcum.toFixed(2)}`;
+    document.getElementById('fundoMotoFinal').innerHTML = `R$ ${fundoMoto.toFixed(2)}`;
+    const totalDinheiro = reservaAcum + fundoMoto;
+    document.getElementById('totalDinheiroFinal').innerHTML = `R$ ${totalDinheiro.toFixed(2)}`;
+    const totalCompra = dados.valorFan + fundoMoto;
+    document.getElementById('totalCompraFinal').innerHTML = `R$ ${totalCompra.toFixed(2)}`;
+    const diferenca = dados.valorR15 - totalCompra;
+    document.getElementById('diferencaFinal').innerHTML = `R$ ${diferenca.toFixed(2)}`;
+
+    document.getElementById('detalhamentoDiaContainer').innerHTML = detalhamentoHTML;
+    atualizarGraficos();
+}
+
+// ============================================================
+//  GRÁFICOS
+// ============================================================
+function atualizarGraficos() {
+    const labels = meses.map(m => m.replace('-','/'));
+    const saldos = meses.map(m => {
+        const { entradas, saidas } = calcularMes(m);
+        const fase2 = isFase2(m);
+        let saldo = entradas - saidas;
+        if (fase2) {
+            saldo = saldo - dados.motoMensal - dados.reservaMensal;
+        }
+        return saldo;
+    });
+    
+    const acumuladoArr = [];
+    let acc = 0;
+    meses.forEach(m => {
+        const { entradas, saidas } = calcularMes(m);
+        const fase2 = isFase2(m);
+        let saldo = entradas - saidas;
+        if (fase2) {
+            saldo = saldo - dados.motoMensal - dados.reservaMensal;
+        }
+        acc += saldo;
+        acumuladoArr.push(acc);
+    });
+
+    if (chartPatrimonio) {
+        chartPatrimonio.destroy();
+        chartPatrimonio = null;
+    }
+    
+    const ctx1 = document.getElementById('chartPatrimonio').getContext('2d');
+    chartPatrimonio = new Chart(ctx1, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                { label: 'Saldo Acumulado', data: acumuladoArr, borderColor: '#1a4cba', backgroundColor: 'rgba(26,76,186,0.06)', fill: true, tension: 0.2, pointRadius: 4 },
+                { label: 'Saldo Mensal', data: saldos, borderColor: '#e67e22', backgroundColor: 'rgba(230,126,34,0.03)', fill: false, borderDash: [4,3], pointRadius: 3 }
+            ]
+        },
+        options: { 
+            responsive: true, 
+            maintainAspectRatio: false, 
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+
+    if (chartPizza) {
+        chartPizza.destroy();
+        chartPizza = null;
+    }
+    
+    const ctx2 = document.getElementById('chartPizza').getContext('2d');
+    const totalReserva = reservaAcum || 0;
+    const totalMoto = fundoMoto || 0;
+    const totalOutros = Math.max(0, (acumulado || 0) - totalReserva - totalMoto);
+    
+    chartPizza = new Chart(ctx2, {
+        type: 'doughnut',
+        data: {
+            labels: ['Reserva', 'Moto', 'Outros'],
+            datasets: [{
+                data: [totalReserva, totalMoto, totalOutros],
+                backgroundColor: ['#1a4cba', '#f1c40f', '#b0bccf'],
+                borderWidth: 0
+            }]
+        },
+        options: { 
+            responsive: true, 
+            maintainAspectRatio: false, 
+            plugins: { legend: { display: false } },
+            cutout: '65%'
+        }
+    });
+}
+
+// ============================================================
+//  INICIALIZAÇÃO
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+    renderizar();
+    console.log('✅ Planejamento - Sem Férias em 2026');
+    console.log('📊 Salário normal todos os meses');
+    console.log('📊 13º: 60% Nov / 40% Dez');
+    console.log('📊 Reserva em Fevereiro/2027: R$', reservaAcum.toFixed(2));
+    console.log('📊 Fundo Moto em Fevereiro/2027: R$', fundoMoto.toFixed(2));
+});
+</script>
+</body>
+</html>
