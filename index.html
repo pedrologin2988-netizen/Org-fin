@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Planejamento · Sem Férias em 2026</title>
+    <title>Planejamento · Faturas Atualizadas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -48,19 +48,39 @@
         .fora-cartao { background: #e3f0ff; border-radius: 4px; padding: 0 4px; }
         .sobra-livre { background: #d1fae5; border-radius: 4px; padding: 0 4px; }
         .receita-box { background: #f8faff; border-radius: 12px; padding: 0.8rem 1.2rem; }
-        .receita-box .row { margin: 0; }
-        .receita-box .col { padding: 0.2rem 0.5rem; }
-        .sem-ferias { background: #fef3c7; border-radius: 12px; padding: 0.5rem 1rem; border-left: 4px solid #f1c40f; }
+        .gasto-extra { background: #fce4ec; border-radius: 4px; padding: 0 4px; font-weight: bold; }
+        .modal-content { border-radius: 20px; border: none; }
+        .form-control, .form-select { border-radius: 12px; padding: 0.6rem 1rem; border: 1px solid #dce3ec; }
+        .form-control:focus, .form-select:focus { border-color: #1a4cba; box-shadow: 0 0 0 0.15rem rgba(26,76,186,0.12); }
+        .btn-primary-custom { background: #1a4cba; border: none; border-radius: 40px; padding: 0.6rem 1.8rem; font-weight: 600; color: white; }
+        .btn-primary-custom:hover { background: #0f3d96; color: white; }
+        .btn-success-custom { background: #28a745; border: none; border-radius: 40px; padding: 0.6rem 1.8rem; font-weight: 600; color: white; }
+        .btn-success-custom:hover { background: #1e7e34; color: white; }
+        .btn-outline-secondary-custom { border: 1px solid #dce3ec; border-radius: 40px; padding: 0.6rem 1.8rem; font-weight: 500; color: #6b7a8f; background: white; }
+        .btn-outline-secondary-custom:hover { background: #f0f4fa; }
+        .btn-danger-custom { background: #dc3545; border: none; border-radius: 40px; padding: 0.3rem 1rem; font-weight: 500; color: white; font-size: 0.8rem; }
+        .btn-danger-custom:hover { background: #b02a37; color: white; }
+        .gasto-item { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid #eef2f7; }
+        .gasto-item:last-child { border-bottom: none; }
+        .acoes-container { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .alert-salvo { position: fixed; top: 20px; right: 20px; z-index: 9999; background: #28a745; color: white; padding: 1rem 2rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: none; }
+        .fatura-destaque { background: #fff8e1; border-radius: 12px; padding: 0.5rem 1rem; border-left: 4px solid #f1c40f; }
     </style>
 </head>
 <body>
+
+<!-- ALERTA DE SALVO -->
+<div class="alert-salvo" id="alertSalvo">
+    <i class="bi bi-check-circle me-2"></i> Dados salvos com sucesso!
+</div>
+
 <div class="container py-4">
 
     <!-- HEADER -->
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
         <div>
             <h1 class="display-6 fw-bold" style="color: #0b1e3c;"><i class="bi bi-graph-up-arrow me-2" style="color:#1a4cba;"></i>Planejamento Financeiro</h1>
-            <p class="text-muted-light">Cenário: Sem Férias em 2026 · Estável e Previsível</p>
+            <p class="text-muted-light">Faturas atualizadas · Com gastos extras · Dados salvos automaticamente</p>
         </div>
         <div>
             <span class="badge-pill-custom me-2"><i class="bi bi-person me-1"></i>Pedro</span>
@@ -69,110 +89,64 @@
         </div>
     </div>
 
-    <!-- AVISO SEM FÉRIAS -->
+    <!-- RESUMO FATURAS -->
     <div class="row g-4 mb-4">
         <div class="col-md-12">
-            <div class="sem-ferias">
-                <i class="bi bi-info-circle me-2" style="color:#f1c40f;"></i>
-                <span class="fw-bold">Cenário: Sem Férias em 2026</span>
-                <span class="text-muted-light ms-2">Salário recebido normalmente todos os meses · Fluxo de caixa estável e previsível</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- RESUMO RECEITAS -->
-    <div class="row g-4 mb-4">
-        <div class="col-md-12">
-            <div class="receita-box">
-                <h6 class="fw-bold mb-2"><i class="bi bi-cash-stack me-2" style="color:#1a4cba;"></i>Receitas Mensais</h6>
+            <div class="fatura-destaque">
+                <h6 class="fw-bold mb-2"><i class="bi bi-credit-card me-2" style="color:#f1c40f;"></i>Faturas do Cartão (Base)</h6>
                 <div class="row">
                     <div class="col-md-3">
-                        <span class="text-muted-light">Salário CLT</span>
-                        <span class="fw-bold">R$ 1.617,44</span>
-                    </div>
-                    <div class="col-md-3">
-                        <span class="text-muted-light">Sistema</span>
-                        <span class="fw-bold">R$ 300,00</span>
-                    </div>
-                    <div class="col-md-3">
-                        <span class="text-muted-light">Extra</span>
-                        <span class="fw-bold">R$ 200,00</span>
-                    </div>
-                    <div class="col-md-3">
-                        <span class="text-muted-light">Total (out em diante)</span>
-                        <span class="fw-bold">R$ 2.117,44</span>
-                    </div>
-                </div>
-                <hr class="my-2">
-                <div class="row">
-                    <div class="col-md-4">
-                        <span class="text-muted-light">Agosto</span>
-                        <span class="fw-bold">R$ 2.917,44</span>
-                        <small class="text-muted-light d-block">(salário + R$ 1.300 do sistema)</small>
-                    </div>
-                    <div class="col-md-4">
-                        <span class="text-muted-light">Setembro</span>
-                        <span class="fw-bold">R$ 1.917,44</span>
-                    </div>
-                    <div class="col-md-4">
-                        <span class="text-muted-light">Outubro em diante</span>
-                        <span class="fw-bold">R$ 2.117,44</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- RESUMO ESTRUTURA -->
-    <div class="row g-4 mb-4">
-        <div class="col-md-12">
-            <div class="dashboard-card card-estrategia">
-                <div class="d-flex flex-wrap justify-content-between align-items-center">
-                    <div>
-                        <h5 class="fw-bold mb-1"><i class="bi bi-credit-card me-2" style="color:#2ecc71;"></i>Estrutura de Pagamentos</h5>
-                        <p class="text-muted-light small mb-0">
-                            <span class="badge-soft me-1">💳 No Cartão</span> Capacete (R$70) + Academia (R$99,90 - dia 16, entra na fatura seguinte)
-                            <br>
-                            <span class="badge-soft me-1">💰 Fora do Cartão</span> Estacionamento R$100 · Combustível R$70 · VPS R$50 · C&A (Agosto R$11,90 | Set-Fev R$73,56)
-                            <br>
-                            <span class="badge-soft me-1">📅 13º</span> 60% em Novembro · 40% em Dezembro
-                        </p>
-                    </div>
-                    <div>
-                        <span class="fase-badge fase-1 me-2">Fase 1: Ago-Set</span>
-                        <span class="fase-badge fase-2">Fase 2: Out-Fev</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- LEGENDA FATURAS -->
-    <div class="row g-4 mb-4">
-        <div class="col-md-12">
-            <div class="bg-light-blue p-3 rounded">
-                <h6 class="fw-bold mb-2"><i class="bi bi-info-circle me-2" style="color:#1a4cba;"></i>Faturas do Cartão (já com Academia R$99,90)</h6>
-                <div class="row">
-                    <div class="col-md-3">
-                        <span class="badge-soft">19/08/2026</span>
+                        <span class="badge-soft">Agosto/2026</span>
                         <span class="fw-bold">R$ 1.926,47</span>
-                        <small class="text-muted-light d-block">Sem academia</small>
                     </div>
                     <div class="col-md-3">
-                        <span class="badge-soft">19/09/2026</span>
-                        <span class="fw-bold">R$ 1.563,74</span>
-                        <small class="text-muted-light d-block">+ Academia R$99,90 (dia 16/08)</small>
+                        <span class="badge-soft">Setembro/2026</span>
+                        <span class="fw-bold">R$ 1.488,02</span>
                     </div>
                     <div class="col-md-3">
-                        <span class="badge-soft">19/10/2026</span>
-                        <span class="fw-bold">R$ 513,65</span>
-                        <small class="text-muted-light d-block">+ Academia R$99,90 (dia 16/09)</small>
+                        <span class="badge-soft">Outubro/2026</span>
+                        <span class="fw-bold">R$ 413,75</span>
                     </div>
                     <div class="col-md-3">
-                        <span class="badge-soft">19/11/2026</span>
-                        <span class="fw-bold">R$ 613,65</span>
-                        <small class="text-muted-light d-block">+ Academia R$99,90 (dia 16/10)</small>
+                        <span class="badge-soft">Novembro em diante</span>
+                        <span class="fw-bold">R$ 513,75*</span>
+                        <small class="text-muted-light d-block">*estimado + academia</small>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AÇÕES -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <button class="btn btn-primary-custom w-100" data-bs-toggle="modal" data-bs-target="#modalNovoGasto">
+                <i class="bi bi-plus-circle me-2"></i>Adicionar Gasto Extra
+            </button>
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-success-custom w-100" onclick="exportarDados()">
+                <i class="bi bi-download me-2"></i>Exportar Dados (JSON)
+            </button>
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-outline-secondary-custom w-100" onclick="document.getElementById('importFile').click()">
+                <i class="bi bi-upload me-2"></i>Importar Dados (JSON)
+            </button>
+            <input type="file" id="importFile" accept=".json" style="display:none" onchange="importarDados(event)">
+        </div>
+    </div>
+
+    <!-- LISTA DE GASTOS EXTRAS -->
+    <div class="row g-4 mb-4" id="listaGastosContainer">
+        <div class="col-md-12">
+            <div class="dashboard-card">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="fw-bold mb-0"><i class="bi bi-credit-card me-2" style="color:#dc3545;"></i>Gastos Extras no Cartão</h6>
+                    <span class="badge-soft" id="totalGastosExtras">Total: R$ 0</span>
+                </div>
+                <div id="listaGastos">
+                    <div class="text-muted-light small">Nenhum gasto extra adicionado ainda.</div>
                 </div>
             </div>
         </div>
@@ -232,7 +206,6 @@
                 <div class="mt-2">
                     <span class="badge bg-warning text-dark">Diferença para R15: <strong id="diferencaFinal">R$ 0</strong></span>
                     <span class="badge bg-info ms-2">💰 13º: 60% Nov / 40% Dez</span>
-                    <span class="badge bg-light text-dark ms-2">📊 Sem férias em 2026</span>
                 </div>
             </div>
         </div>
@@ -297,25 +270,64 @@
     </div>
 </div>
 
+<!-- MODAL NOVO GASTO -->
+<div class="modal fade" id="modalNovoGasto" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold"><i class="bi bi-plus-circle me-2" style="color:#dc3545;"></i>Adicionar Gasto Extra no Cartão</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formNovoGasto">
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Descrição do Gasto</label>
+                        <input type="text" class="form-control" id="descGasto" placeholder="Ex: Compras, Jantar, Presente..." required>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <label class="form-label small fw-semibold">Valor (R$)</label>
+                            <input type="number" class="form-control" id="valorGasto" step="0.01" min="0" required>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small fw-semibold">Mês da Compra</label>
+                            <select class="form-select" id="mesGasto" required>
+                                <option value="2026-08">Agosto/2026</option>
+                                <option value="2026-09">Setembro/2026</option>
+                                <option value="2026-10" selected>Outubro/2026</option>
+                                <option value="2026-11">Novembro/2026</option>
+                                <option value="2026-12">Dezembro/2026</option>
+                                <option value="2027-01">Janeiro/2027</option>
+                                <option value="2027-02">Fevereiro/2027</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mt-3 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary-custom w-100">Adicionar Gasto</button>
+                        <button type="button" class="btn btn-outline-secondary-custom w-50" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 // ============================================================
-//  DADOS - CENÁRIO SEM FÉRIAS EM 2026
-//  Salário normal todos os meses
-//  Academia: R$99,90 (dia 16, entra na fatura seguinte)
-//  13º: 60% Nov / 40% Dez
+//  DADOS BASE - FATURAS ATUALIZADAS
+//  Agosto: R$ 1.926,47
+//  Setembro: R$ 1.488,02
+//  Outubro: R$ 413,75
 // ============================================================
-const dados = {
+const dadosBase = {
     nome: 'Pedro',
     salarioLiquido: 1617.44,
     salarioBruto: 1750.68,
-    academia: 99.90,
     
-    // 13º: 60% na primeira parcela, 40% na segunda
     decimoParcela1: 0.60,
     decimoParcela2: 0.40,
     
-    // Receitas: Sistema + Extra
     rendaExtra: {
         '2026-08': { sistema: 1300, extra: 0 },
         '2026-09': { sistema: 300, extra: 0 },
@@ -326,18 +338,17 @@ const dados = {
         '2027-02': { sistema: 300, extra: 200 },
     },
     
-    // FATURAS COM ACADEMIA R$99,90
-    cartao: {
+    // FATURAS ATUALIZADAS
+    cartaoBase: {
         '2026-08': 1926.47,
-        '2026-09': 1563.74,  // 1463.84 + 99.90
-        '2026-10': 513.65,   // 413.75 + 99.90
-        '2026-11': 613.65,   // 513.75* + 99.90
-        '2026-12': 613.65,
-        '2027-01': 613.65,
-        '2027-02': 613.65,
+        '2026-09': 1488.02,
+        '2026-10': 413.75,
+        '2026-11': 513.75,  // estimado
+        '2026-12': 513.75,  // estimado
+        '2027-01': 513.75,  // estimado
+        '2027-02': 513.75,  // estimado
     },
     
-    // Fora do cartão
     foraCartao: {
         estacionamento: 100,
         combustivel: 70,
@@ -355,14 +366,89 @@ const dados = {
     
     reservaMensal: 200,
     motoMensal: 750,
-    
     valorFan: 18500,
     valorR15: 25220,
 };
 
 // ============================================================
+//  GASTOS EXTRAS - COM LOCALSTORAGE
+// ============================================================
+const STORAGE_KEY = 'gastosExtrasPedroV2';
+
+function carregarGastos() {
+    try {
+        const dados = localStorage.getItem(STORAGE_KEY);
+        if (dados) {
+            return JSON.parse(dados);
+        }
+    } catch (e) {
+        console.error('Erro ao carregar gastos:', e);
+    }
+    return [];
+}
+
+function salvarGastos(gastos) {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(gastos));
+        mostrarAlertSalvo();
+    } catch (e) {
+        console.error('Erro ao salvar gastos:', e);
+    }
+}
+
+function mostrarAlertSalvo() {
+    const alert = document.getElementById('alertSalvo');
+    alert.style.display = 'block';
+    setTimeout(() => {
+        alert.style.display = 'none';
+    }, 2000);
+}
+
+// ============================================================
+//  EXPORTAR / IMPORTAR DADOS
+// ============================================================
+function exportarDados() {
+    const data = {
+        gastos: gastosExtras,
+        dataExportacao: new Date().toISOString()
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `gastos_extras_${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+function importarDados(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const data = JSON.parse(e.target.result);
+            if (data.gastos && Array.isArray(data.gastos)) {
+                gastosExtras = data.gastos;
+                salvarGastos(gastosExtras);
+                renderizar();
+                alert('Dados importados com sucesso!');
+            } else {
+                alert('Arquivo inválido. Certifique-se de que é um arquivo JSON válido.');
+            }
+        } catch (err) {
+            alert('Erro ao importar arquivo: ' + err.message);
+        }
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+}
+
+// ============================================================
 //  VARIÁVEIS GLOBAIS
 // ============================================================
+let gastosExtras = carregarGastos();
 let acumulado = 0;
 let fundoMoto = 0;
 let reservaAcum = 0;
@@ -371,7 +457,7 @@ let chartPizza = null;
 const meses = ['2026-08', '2026-09', '2026-10', '2026-11', '2026-12', '2027-01', '2027-02'];
 
 // ============================================================
-//  FUNÇÕES - SEM FÉRIAS
+//  FUNÇÕES
 // ============================================================
 function isFase2(mes) {
     const ano = parseInt(mes.split('-')[0]);
@@ -382,47 +468,103 @@ function isFase2(mes) {
 }
 
 function getForaCartao(mes) {
-    const ca = dados.foraCartao.ca[mes] || 0;
-    return dados.foraCartao.estacionamento + dados.foraCartao.combustivel + dados.foraCartao.vps + ca;
+    const ca = dadosBase.foraCartao.ca[mes] || 0;
+    return dadosBase.foraCartao.estacionamento + dadosBase.foraCartao.combustivel + dadosBase.foraCartao.vps + ca;
 }
 
 function getRendaExtraTotal(mes) {
-    const extra = dados.rendaExtra[mes];
+    const extra = dadosBase.rendaExtra[mes];
     if (!extra) return 0;
     return (extra.sistema || 0) + (extra.extra || 0);
 }
 
 function getSalario(mes) {
-    // Sem férias: recebe salário normalmente todos os meses
     const mesNum = parseInt(mes.split('-')[1]);
-    if (mesNum >= 8 && mesNum <= 12) return dados.salarioLiquido;
-    if (mesNum >= 1 && mesNum <= 2) return dados.salarioLiquido;
+    if (mesNum >= 8 && mesNum <= 12) return dadosBase.salarioLiquido;
+    if (mesNum >= 1 && mesNum <= 2) return dadosBase.salarioLiquido;
     return 0;
 }
 
 function getFerias(mes) {
-    // Sem férias em 2026
     return 0;
 }
 
 function getDecimoTerceiro(mes) {
-    if (mes === '2026-11') {
-        return dados.salarioBruto * dados.decimoParcela1; // 60%
-    }
-    if (mes === '2026-12') {
-        return dados.salarioBruto * dados.decimoParcela2; // 40%
-    }
+    if (mes === '2026-11') return dadosBase.salarioBruto * dadosBase.decimoParcela1;
+    if (mes === '2026-12') return dadosBase.salarioBruto * dadosBase.decimoParcela2;
     return 0;
 }
 
-function getCartao(mes) {
-    return dados.cartao[mes] || 0;
+function getCartaoBase(mes) {
+    return dadosBase.cartaoBase[mes] || 0;
+}
+
+function getGastosExtrasMes(mes) {
+    let total = 0;
+    gastosExtras.forEach(g => {
+        if (g.mes === mes) total += g.valor;
+    });
+    return total;
+}
+
+function getCartaoTotal(mes) {
+    return getCartaoBase(mes) + getGastosExtrasMes(mes);
 }
 
 function calcularMes(mes) {
     const entradas = getSalario(mes) + getRendaExtraTotal(mes) + getFerias(mes) + getDecimoTerceiro(mes);
-    const saidas = getCartao(mes) + getForaCartao(mes);
+    const saidas = getCartaoTotal(mes) + getForaCartao(mes);
     return { entradas, saidas };
+}
+
+// ============================================================
+//  ATUALIZAR LISTA DE GASTOS
+// ============================================================
+function atualizarListaGastos() {
+    const container = document.getElementById('listaGastos');
+    const totalSpan = document.getElementById('totalGastosExtras');
+    
+    let totalGeral = 0;
+    
+    if (gastosExtras.length === 0) {
+        container.innerHTML = '<div class="text-muted-light small">Nenhum gasto extra adicionado ainda.</div>';
+        totalSpan.textContent = 'Total: R$ 0';
+        return;
+    }
+    
+    // Ordenar por mês
+    const gastosOrdenados = [...gastosExtras].sort((a, b) => a.mes.localeCompare(b.mes));
+    
+    let html = '';
+    gastosOrdenados.forEach((g, index) => {
+        totalGeral += g.valor;
+        const mesFormatado = g.mes.replace('-', '/');
+        html += `
+            <div class="gasto-item">
+                <div>
+                    <span class="badge-soft">${mesFormatado}</span>
+                    <span class="fw-semibold">${g.descricao || 'Gasto'}</span>
+                </div>
+                <div>
+                    <span class="text-danger fw-bold">- R$ ${g.valor.toFixed(2)}</span>
+                    <button class="btn btn-danger-custom ms-2" onclick="removerGasto(${index})">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+    totalSpan.textContent = `Total: R$ ${totalGeral.toFixed(2)}`;
+}
+
+function removerGasto(index) {
+    if (confirm('Remover este gasto extra?')) {
+        gastosExtras.splice(index, 1);
+        salvarGastos(gastosExtras);
+        renderizar();
+    }
 }
 
 // ============================================================
@@ -432,7 +574,7 @@ function gerarDetalhamentoDia(mes) {
     const mesNum = parseInt(mes.split('-')[1]);
     const dias = [];
     
-    const extra = dados.rendaExtra[mes];
+    const extra = dadosBase.rendaExtra[mes];
     const sistema = extra ? extra.sistema : 0;
     const extraValor = extra ? extra.extra : 0;
     
@@ -448,29 +590,31 @@ function gerarDetalhamentoDia(mes) {
         dias.push({ dia: '03', desc: 'Salário', valor: salario, tipo: 'entrada', classe: '' });
     }
     
-    // Sem férias - não há entrada de férias
-    
     if (mes === '2026-11') {
-        const valor60 = dados.salarioBruto * dados.decimoParcela1;
+        const valor60 = dadosBase.salarioBruto * dadosBase.decimoParcela1;
         dias.push({ dia: '30', desc: '1ª Parcela 13º (60%)', valor: valor60, tipo: 'entrada', classe: 'decimo-60' });
     }
     
     if (mes === '2026-12') {
-        const valor40 = dados.salarioBruto * dados.decimoParcela2;
+        const valor40 = dadosBase.salarioBruto * dadosBase.decimoParcela2;
         dias.push({ dia: '15', desc: '2ª Parcela 13º (40%)', valor: valor40, tipo: 'entrada', classe: 'decimo-40' });
     }
     
-    // SAÍDAS - Cartão
-    const cartao = getCartao(mes);
-    if (cartao > 0) {
-        let desc = 'Cartão de Crédito';
-        if (mes === '2026-08') desc += ' (sem academia)';
-        else desc += ' (com academia R$99,90)';
-        dias.push({ dia: '19', desc: desc, valor: cartao, tipo: 'saida', classe: 'cartao-info' });
+    // SAÍDAS - Cartão (base + gastos extras)
+    const cartaoBase = getCartaoBase(mes);
+    const gastosExtra = getGastosExtrasMes(mes);
+    const cartaoTotal = cartaoBase + gastosExtra;
+    
+    if (cartaoTotal > 0) {
+        let desc = `Cartão de Crédito (R$ ${cartaoBase.toFixed(2)})`;
+        if (gastosExtra > 0) {
+            desc += ` + gastos extras R$ ${gastosExtra.toFixed(2)}`;
+        }
+        dias.push({ dia: '19', desc: desc, valor: cartaoTotal, tipo: 'saida', classe: 'cartao-info' });
     }
     
     // SAÍDAS - Fora do cartão
-    const ca = dados.foraCartao.ca[mes] || 0;
+    const ca = dadosBase.foraCartao.ca[mes] || 0;
     if (ca > 0) {
         let desc = 'C&A';
         if (mes === '2026-08') desc += ' (R$11,90)';
@@ -478,9 +622,9 @@ function gerarDetalhamentoDia(mes) {
     }
     
     const fora = [
-        { dia: '05', desc: 'Estacionamento', valor: dados.foraCartao.estacionamento },
-        { dia: '10', desc: 'VPS', valor: dados.foraCartao.vps },
-        { dia: '20', desc: 'Combustível', valor: dados.foraCartao.combustivel },
+        { dia: '05', desc: 'Estacionamento', valor: dadosBase.foraCartao.estacionamento },
+        { dia: '10', desc: 'VPS', valor: dadosBase.foraCartao.vps },
+        { dia: '20', desc: 'Combustível', valor: dadosBase.foraCartao.combustivel },
     ];
     
     fora.forEach(f => {
@@ -491,8 +635,8 @@ function gerarDetalhamentoDia(mes) {
     
     // Fase 2: Outubro em diante - Reserva + Moto
     if (isFase2(mes)) {
-        dias.push({ dia: '28', desc: 'Reserva de Emergência', valor: dados.reservaMensal, tipo: 'saida', classe: '' });
-        dias.push({ dia: '28', desc: 'Fundo Moto', valor: dados.motoMensal, tipo: 'saida', classe: 'moto-destaque' });
+        dias.push({ dia: '28', desc: 'Reserva de Emergência', valor: dadosBase.reservaMensal, tipo: 'saida', classe: '' });
+        dias.push({ dia: '28', desc: 'Fundo Moto', valor: dadosBase.motoMensal, tipo: 'saida', classe: 'moto-destaque' });
     }
     
     dias.sort((a, b) => parseInt(a.dia) - parseInt(b.dia));
@@ -511,6 +655,8 @@ function renderizar() {
     
     let detalhamentoHTML = '';
 
+    atualizarListaGastos();
+
     meses.forEach((mes) => {
         const { entradas, saidas } = calcularMes(mes);
         const saldo = entradas - saidas;
@@ -523,8 +669,8 @@ function renderizar() {
         let sobraLivre = 0;
         
         if (fase2) {
-            motoMes = dados.motoMensal;
-            reservaMes = dados.reservaMensal;
+            motoMes = dadosBase.motoMensal;
+            reservaMes = dadosBase.reservaMensal;
             saldoAjustado = saldo - motoMes - reservaMes;
             sobraLivre = saldoAjustado;
         }
@@ -533,13 +679,16 @@ function renderizar() {
         fundoMoto += motoMes;
         reservaAcum += reservaMes;
         
-        const hasCartao = dados.cartao[mes] !== undefined && dados.cartao[mes] > 0;
+        const hasCartao = getCartaoTotal(mes) > 0;
         const fase = fase2 ? 'Fase 2' : 'Fase 1';
         const decimoInfo = mes === '2026-11' ? ' 🟢 60%' : (mes === '2026-12' ? ' 🔵 40%' : '');
+        const temGastoExtra = getGastosExtrasMes(mes) > 0;
+        const gastoExtraValor = getGastosExtrasMes(mes);
         
         let icones = '';
         if (hasCartao) icones += ' 💳';
         if (decimoInfo) icones += decimoInfo;
+        if (temGastoExtra) icones += ' 🟡';
         
         const row = `<tr>
             <td>
@@ -547,6 +696,7 @@ function renderizar() {
                 ${icones}
                 <br><small class="text-muted-light">${fase}</small>
                 ${fase2 ? `<br><small class="sobra-livre">Sobra: R$ ${sobraLivre.toFixed(2)}</small>` : ''}
+                ${temGastoExtra ? `<br><small class="text-danger">+ Gasto Extra: R$ ${gastoExtraValor.toFixed(2)}</small>` : ''}
             </td>
             <td class="text-success fw-semibold">R$ ${entradas.toFixed(2)}</td>
             <td class="text-danger">R$ ${saidas.toFixed(2)}</td>
@@ -589,16 +739,18 @@ function renderizar() {
     document.getElementById('reservaAtual').innerHTML = `R$ ${reservaAcum.toFixed(2)}`;
     
     let dividaTotal = 0;
-    Object.values(dados.cartao).forEach(v => dividaTotal += v);
+    Object.keys(dadosBase.cartaoBase).forEach(k => {
+        dividaTotal += getCartaoTotal(k);
+    });
     document.getElementById('dividaCartao').innerHTML = `R$ ${dividaTotal.toFixed(2)}`;
 
     document.getElementById('reservaFinal').innerHTML = `R$ ${reservaAcum.toFixed(2)}`;
     document.getElementById('fundoMotoFinal').innerHTML = `R$ ${fundoMoto.toFixed(2)}`;
     const totalDinheiro = reservaAcum + fundoMoto;
     document.getElementById('totalDinheiroFinal').innerHTML = `R$ ${totalDinheiro.toFixed(2)}`;
-    const totalCompra = dados.valorFan + fundoMoto;
+    const totalCompra = dadosBase.valorFan + fundoMoto;
     document.getElementById('totalCompraFinal').innerHTML = `R$ ${totalCompra.toFixed(2)}`;
-    const diferenca = dados.valorR15 - totalCompra;
+    const diferenca = dadosBase.valorR15 - totalCompra;
     document.getElementById('diferencaFinal').innerHTML = `R$ ${diferenca.toFixed(2)}`;
 
     document.getElementById('detalhamentoDiaContainer').innerHTML = detalhamentoHTML;
@@ -615,7 +767,7 @@ function atualizarGraficos() {
         const fase2 = isFase2(m);
         let saldo = entradas - saidas;
         if (fase2) {
-            saldo = saldo - dados.motoMensal - dados.reservaMensal;
+            saldo = saldo - dadosBase.motoMensal - dadosBase.reservaMensal;
         }
         return saldo;
     });
@@ -627,7 +779,7 @@ function atualizarGraficos() {
         const fase2 = isFase2(m);
         let saldo = entradas - saidas;
         if (fase2) {
-            saldo = saldo - dados.motoMensal - dados.reservaMensal;
+            saldo = saldo - dadosBase.motoMensal - dadosBase.reservaMensal;
         }
         acc += saldo;
         acumuladoArr.push(acc);
@@ -688,15 +840,40 @@ function atualizarGraficos() {
 }
 
 // ============================================================
+//  FORMULÁRIO - ADICIONAR GASTO
+// ============================================================
+document.getElementById('formNovoGasto').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const descricao = document.getElementById('descGasto').value.trim();
+    const valor = parseFloat(document.getElementById('valorGasto').value);
+    const mes = document.getElementById('mesGasto').value;
+    
+    if (!descricao || isNaN(valor) || valor <= 0) {
+        alert('Preencha todos os campos corretamente.');
+        return;
+    }
+    
+    gastosExtras.push({ descricao, valor, mes });
+    salvarGastos(gastosExtras);
+    
+    // Fechar modal
+    bootstrap.Modal.getInstance(document.getElementById('modalNovoGasto')).hide();
+    document.getElementById('formNovoGasto').reset();
+    
+    renderizar();
+});
+
+// ============================================================
 //  INICIALIZAÇÃO
 // ============================================================
 document.addEventListener('DOMContentLoaded', function() {
     renderizar();
-    console.log('✅ Planejamento - Sem Férias em 2026');
-    console.log('📊 Salário normal todos os meses');
-    console.log('📊 13º: 60% Nov / 40% Dez');
-    console.log('📊 Reserva em Fevereiro/2027: R$', reservaAcum.toFixed(2));
-    console.log('📊 Fundo Moto em Fevereiro/2027: R$', fundoMoto.toFixed(2));
+    console.log('✅ Planejamento - Faturas Atualizadas');
+    console.log('📊 Agosto: R$ 1.926,47');
+    console.log('📊 Setembro: R$ 1.488,02');
+    console.log('📊 Outubro: R$ 413,75');
+    console.log('📊 Gastos Extras carregados:', gastosExtras.length);
 });
 </script>
 </body>
